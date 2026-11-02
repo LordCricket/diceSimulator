@@ -39,10 +39,7 @@ public class Game
                 Console.WriteLine("Rolling...");
                 Console.WriteLine();
 
-                for (int i = 0; i < rolls.Count; i++)
-                {
-                    Console.WriteLine($"Die {i+1}: {rolls[i]}");
-                }
+                Renderer.RenderDice(rolls);
                 Console.WriteLine();
                 Console.WriteLine($"Total: {total}");
 
