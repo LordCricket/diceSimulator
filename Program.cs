@@ -1,3 +1,2 @@
-﻿Die dice = new Die(6);
-
-Console.WriteLine(dice.Roll());
+﻿Game game = new Game();
+game.Run();
