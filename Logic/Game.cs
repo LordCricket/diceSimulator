@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+
 public class Game
 {
     public void Run()
@@ -6,6 +8,7 @@ public class Game
 
         while (running)
         {
+            Console.Clear();
             Console.WriteLine("[1] - Roll Dice");
             Console.WriteLine("[2] - Quit");
 
@@ -18,6 +21,7 @@ public class Game
                 if (sides == 0)
                 {
                     Console.WriteLine("Invalid Die Selection!");
+                    Thread.Sleep(250);
                     break;
                 }
 
@@ -25,6 +29,7 @@ public class Game
                 if (quantity == 0)
                 {
                     Console.WriteLine("Invalid quantity selection!");
+                    Thread.Sleep(250);
                     break;
                 }
 
@@ -37,11 +42,33 @@ public class Game
                 Console.WriteLine($"Quantity: {quantity}");
                 Console.WriteLine();
                 Console.WriteLine("Rolling...");
-                Console.WriteLine();
+                Thread.Sleep(250);
+                Console.Write(".");
+                Thread.Sleep(250);
+                Console.Write(".");
+                Thread.Sleep(250);
+                Console.WriteLine(".");
+                Thread.Sleep(250);
+                Console.Clear();
 
                 Renderer.RenderDice(sides, rolls);
                 Console.WriteLine();
-                Console.WriteLine($"Total: {total}");
+                if (sides == 100)
+                {
+                    int max = rolls.Count * 100;
+                    double percentage = (double)total / max * 100;
+
+                    Console.WriteLine($"Combined: {total}/{max}");
+                    Console.WriteLine($"Average Percentile: {percentage:F2}%");
+                }
+                else
+                {
+                    Console.WriteLine($"Total: {total}");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey(true);
+                Console.Clear();
 
                 break;
 

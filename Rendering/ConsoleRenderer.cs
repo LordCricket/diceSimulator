@@ -17,14 +17,51 @@ public static class Renderer
 
     public static string[] BuildSquareDie(int value)
     {
-        string number = value.ToString().PadLeft(4).PadRight(7);
+        string top = "│       │";
+        string middle = "│       │";
+        string bottom = "│       │";
+
+        switch (value)
+        {
+            case 1:
+            middle = "│   ●   │";
+            break;
+
+            case 2:
+            top = "│ ●     │";
+            bottom = "│     ● │";
+            break;
+
+            case 3:
+            top = "│ ●     │";
+            middle = "│   ●   │";
+            bottom = "│     ● │";
+            break;
+
+            case 4:
+            top = "│ ●   ● │";
+            bottom = "│ ●   ● │";
+            break;
+
+            case 5:
+            top = "│ ●   ● │";
+            middle = "│   ●   │";
+            bottom = "│ ●   ● │";
+            break;
+
+            case 6:
+            top = "│ ●   ● │";
+            middle = "│ ●   ● │";
+            bottom = "│ ●   ● │";
+            break;
+        }
 
         return new string[]
         {
             "┌───────┐",
-            "│       │",
-            $"│{number}│",
-            "│       │",
+            top,
+            middle,
+            bottom,
             "└───────┘"
         };
     }
@@ -100,32 +137,50 @@ public static class Renderer
             }
         }
 
-        for (int row = 0; row < diceArt[0].Length; row++)
-        {
-            for (int i = 0; i < diceArt.Count; i++)
-            {
-                Console.Write(diceArt[i][row].PadRight(10) + "   ");
-            }     
-            Console.WriteLine();
-        }
+        int terminalWidth = Console.WindowWidth;
+        int dieWidth = diceArt[0].Max(line => line.Length) + 3;
+        int dicePerRow = Math.Max(1, terminalWidth / dieWidth);
 
         if (sides == 100)
         {
-            for (int i = 0; i < rolls.Count; i++)
-            {
-                string label = rolls.Count == 1 ? $"Percentile: {rolls[i]}" : $"Percentile {i + 1}: {rolls[i]}";
-                Console.WriteLine (label);
-            }
+            dicePerRow = Math.Max(1, dicePerRow / 2) * 2;
         }
 
-        else
+        for (int start = 0; start < diceArt.Count; start += dicePerRow)
         {
-            for (int i = 0; i < diceArt.Count; i++)
+            int end = Math.Min(start + dicePerRow, diceArt.Count);
+
+            for (int row = 0; row < diceArt[0].Length; row++)
             {
-                string label = $"Die {i + 1}: {rolls[i]}";
-                Console.Write(label.PadRight(11));
+                for (int i = start; i < end; i++)
+                {
+                    Console.Write(diceArt[i][row].PadRight(dieWidth - 3) + "   ");
+                }     
+                Console.WriteLine();
+            }
+
+            if (sides != 100)
+            {
+                for (int i = start; i < end; i++)
+                {
+                    string label = $"Die {i + 1}: {rolls[i]}";
+                    Console.Write(label.PadRight(dieWidth));
+                }
+                Console.WriteLine();
+            }
+
+            else
+            {
+                for (int i = start; i < end; i += 2)
+                {
+                    int rollIndex = i / 2;
+
+                    string label = rolls.Count == 1 ? $"Percentile: {rolls[rollIndex]}" : $"Percentile {rollIndex + 1}: {rolls[rollIndex]}";
+
+                    Console.Write(label.PadRight(dieWidth * 2));
+                }
+                Console.WriteLine();
             }
         }
-        Console.WriteLine();
     }
 }
