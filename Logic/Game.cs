@@ -39,7 +39,7 @@ public class Game
                 Console.WriteLine("Rolling...");
                 Console.WriteLine();
 
-                Renderer.RenderDice(rolls);
+                Renderer.RenderDice(sides, rolls);
                 Console.WriteLine();
                 Console.WriteLine($"Total: {total}");
 
